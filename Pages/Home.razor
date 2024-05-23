@@ -1,18 +1,38 @@
-﻿@page "/"
+@page "/"
+
+@using Microsoft.JSInterop
 
 <PageTitle>Formata N° Processo</PageTitle>
 
-<h1>Formate o Número de Processo</h1>
-
-<p role="status">@currentCount</p>
-
-<button class="btn btn-success" @onclick="IncrementCount">COPIAR</button>
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+        <h1>Formate o Número de Processo</h1>
+        
+        <div class="mb-3">
+            <input type="text" class="form-control" @bind="processNumber" placeholder="Digite o número do processo"/>
+        </div>
+        
+        <div class="mb-3">
+            <input type="text" class="form-control" value="@formattedProcessNumber" readonly placeholder="Número de processo formatado"/>
+        </div>
+        
+        <button class="btn btn-success" @onclick="CopyToClipboard">COPIAR</button>
+        
+        <div class="mt-3">
+            <span class="text-success" style="display:@(isCopied ? "block" : "none")">Número copiado para a área de transferência! 🗂️</span>
+        </div>
+    </div>
+</div>
 
 @code {
-    private string currentCount = string.Empty;
+    private string processNumber = string.Empty;
+    private string formattedProcessNumber = string.Empty;
+    private bool isCopied = false;
 
-    private void IncrementCount()
+    private void CopyToClipboard()
     {
-        currentCount = "Copiado! 🗂️";
+        formattedProcessNumber = processNumber.Replace("-", string.Empty).Replace(".", string.Empty);
+        JS.InvokeVoidAsync("navigator.clipboard.writeText", formattedProcessNumber);
+        isCopied = true;
     }
 }
