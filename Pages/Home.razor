@@ -34,7 +34,7 @@
 
     private void CopyToClipboard()
     {
-        formattedProcessNumber = processNumber.Replace("-", string.Empty).Replace(".", string.Empty);
+        formattedProcessNumber = processNumber.Replace("-", string.Empty).Replace(".", string.Empty).Trim();
         JS.InvokeVoidAsync("navigator.clipboard.writeText", formattedProcessNumber);
         isCopied = true;
     }
